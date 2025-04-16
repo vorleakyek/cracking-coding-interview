@@ -1,19 +1,50 @@
+
 class DynamicArray {
   constructor() {
-    this.capacity = 10; //total number of slots
+    this.capacity = 2; //total number of slots
     this._size = 0; //create a property called 'size' for the number of elements actually stored
-    this.fixedArray = new Array(this.capacity).filled(null); 
+    this.fixedArray = new Array(this.capacity).fill(null); 
   }
 
   getSize() {
-    return this.size; 
+    return this._size; 
   }
 
+  getCapacity() {
+    return this.capacity; 
+  }
+
+  append(x) {
+
+    //if the size is equal to the capacity, then can't push it anymore until double the capacity 
+    if(this._size < this.capacity) {
+      
+      this.fixedArray.push(x);
+      this._size++; 
+      
+    } else {
+      
+      const newArray = new Array(this.capacity * 2).fill(null); 
+
+      for(let i=0; i<this.capacity; i++) {
+        newArray.push(this.fixedArray[i])
+      }
+
+      newArray.push(x);
+      this._size++;
+      this.capacity *= 2; 
+      this.fixedArray = newArray; 
+    }
+    
+  }
 }
 
 
 const arr = new DynamicArray(); 
-console.log(arr.getSize()); 
+arr.append(1);
+arr.append(3);
+arr.append(5)
+console.log(arr.getCapacity()); 
 
 // Your previous Plain Text content is preserved below:
 
