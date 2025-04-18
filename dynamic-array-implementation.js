@@ -1,7 +1,7 @@
 
 class DynamicArray {
   constructor() {
-    this.capacity = 3; //total number of slots
+    this.capacity = 10; //total number of slots
     this._size = 0; //create a property called 'size' for the number of elements actually stored
     this.fixedArray = new Array(this.capacity).fill(null); 
   }
@@ -15,46 +15,46 @@ class DynamicArray {
   }
 
   append(x) {
-
-    //if the size is equal to the capacity, then can't push it anymore until double the capacity     
-    if(this._size < this.capacity) {
-      
-      this.fixedArray[this._size] = x;
-      this._size++; 
-      
-    } else {
-      
+    if (this._size === this.capacity) {
       const newArray = new Array(this.capacity * 2).fill(null); 
 
-      for(let i=0; i<this.capacity; i++) {
+      for(let i = 0; i < this._size; i++) {
         newArray[i] = this.fixedArray[i];
       }
 
-      newArray[this._size] = x;
-      this._size++;
+      this.fixedArray = newArray;
       this.capacity *= 2; 
-      this.fixedArray = newArray; 
     }
-    
+
+     this.fixedArray[this._size] = x;
+     this._size++;
   }
 
-  get(ind) {
-    for(let i=0; i<this.capacity; i++) {
-      if (i === ind) {
-        return this.fixedArray[i];
-      }
-    }
+  get(i) {
+    if (i < 0 || i >= this._size) {
+      throw new Error("Index out of bounds.");
+    } 
+    return this.fixedArray[i];
   }
 
   set(ind, val) {
+    if (ind < 0 || ind >= this._size) {
+      throw new Error("Index out of bounds.")
+    }
     this.fixedArray[ind] = val;
   }
 
-  pop_back() {
-    //do something 
-  }
+  popBack() {
+    if (this._size === 0 ) {
+      throw new Error("no elements in the array");
+    }
 
-  
+    this._size--; 
+
+    if (this._size / this.capacity < 0.25 && this.capacity > 10) {
+      //resize it 
+    }
+  }
 }
 
 
